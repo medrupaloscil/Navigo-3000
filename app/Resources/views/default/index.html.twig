@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+
+{% block header %}
+    <div id="banner">
+        <div class="container">
+            <div class="row">
+                <section class="12u">
+                    <header>
+                        <h2>Le navigo à portée de tous</h2>
+                        <span class="byline">Navigo 3000, première solution web de gestion de carte navigo. Découvrez nos services, et surtout payez-nous bien cher que je puisse enfin me payer des vacances !</span>
+                    </header>
+                    <a href="#" class="button button-alt">Je suis intéressé</a>
+                </section>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block body %}
+    <div id="featured-wrapper">
+        <div class="container">
+            <div class="row double">
+                <section class="4u">
+                    <header>
+                        <h2>Développé sur un MacBook</h2>
+                    </header>
+                    <span class="pennant"><span class="fa fa-apple"></span></span>
+                    <p>Je sais, c'est pas un argument de vente, mais le logo était déjà présent sur le template donc bon... Voilà voilà.</p>
+                    <a href="https://www.auchandirect.fr/rayons/146?gclid=Cj0KEQiAsrnCBRCTs7nqwrm6pcYBEiQAcQSznOCzANFwzbmkvmIlFsq4w2gMhEZUcE6l0O5DCf95jQcaAsr28P8HAQ#cid=sea_resoneo_unbranded_google_paris_en%20%2Bligne%20%2Bpommes" target="_blank" class="button button-style1">Apple Store</a>
+                </section>
+                <section class="4u">
+                    <header>
+                        <h2>Aussi rapide qu'une fusée</h2>
+                    </header>
+                    <span class="pennant"><span class="fa fa-rocket"></span></span>
+                    <p>Bon en vrai j'ai moyen bossé sur de l'optimisation mais vu le temps que prend une fusée à aller sur la lune j'ai quand même une marge.</p>
+                    <a href="#" class="button button-style1">Ce bouton ne marche pas</a>
+                </section>
+                <section class="4u">
+                    <header>
+                        <h2>Testez votre carte</h2>
+                    </header>
+                    <span class="pennant"><span class="fa fa-cogs"></span></span>
+                    <p>Ah, alors là par contre on arrive sur une vraie fonctionnalité, genre qui marche et tout ! Vous pouvez essayer !</p>
+                    <a href="{{ path('testCard') }}" class="button button-style1">Allons-y !</a>
+                </section>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}
