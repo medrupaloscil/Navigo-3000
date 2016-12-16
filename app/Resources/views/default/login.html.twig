@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block connexionActive %}current_page_item{% endblock %}
+
+{% block body %}
+
+    {% if error is defined and error is not null %}
+        <div>{{ error.message }}</div>
+    {% endif %}
+
+    <form method="post" action="{{ path('login') }}">
+        <input type="text" placeholder="email" name="_username">
+        <input type="password" placeholder="password" name="_password">
+        <input type="submit" value="Connect">
+    </form>
+
+{% endblock %}

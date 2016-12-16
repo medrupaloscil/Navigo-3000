@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block inscriptionActive %}current_page_item{% endblock %}
+
+{% block body %}
+
+    {{ form_start(form) }}
+    {{ form_widget(form) }}
+    {{ form_end(form) }}
+
+{% endblock %}

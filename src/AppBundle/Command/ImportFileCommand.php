@@ -41,7 +41,7 @@ class ImportFileCommand extends ContainerAwareCommand
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute(array("date" => date('Y-m-d', strtotime('+1 year')) ));
         } else if ($model == "user") {
-            $sql .= "navigo.user FIELDS TERMINATED BY ' ' LINES TERMINATED BY '\n' (firstname, lastname, @mail) set mail=CONCAT(lastname,'.',firstname,FLOOR(RAND() * 999999),'@gmail.com');";
+            $sql .= "navigo.user FIELDS TERMINATED BY ' ' LINES TERMINATED BY '\n' (firstname, lastname, @mail, @roles) set mail=CONCAT(lastname,'.',firstname,FLOOR(RAND() * 999999),'@gmail.com'), roles='a:1:{i:0;s:10:\"ROLE_USERS\";}';";
             $stmt = $em->getConnection()->prepare($sql);
             $stmt->execute();
         }

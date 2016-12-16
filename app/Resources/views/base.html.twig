@@ -16,12 +16,18 @@
 <body class="homepage">
     <div id="header-wrapper">
         <div id="header" class="container">
-            <div id="logo"><h1><a href="#">Navigo 3000</a></h1></div>
+            <div id="logo"><h1><a href="{{ path('homepage') }}">Navigo 3000</a></h1></div>
             <nav id="nav">
                 <ul>
-                    <li class="current_page_item"><a href="/">Accueil</a></li>
-                    <li><a href="###">Client</a></li>
-                    <li><a href="###">Employé</a></li>
+                    {% if is_granted("ROLE_USER") %}
+                        <li class="{% block dashboardActive %}{% endblock %}"><a href="{{ path('dashboard') }}">Dashboard</a></li>
+                        <li class="{% block profileActive %}{% endblock %}"><a href="{{ path('profile') }}">Profile</a></li>
+                        <li><a href="{{ path('logout') }}">Logout</a></li>
+                    {% else %}
+                        <li class="{% block homepageActive %}{% endblock %}"><a href="{{ path('homepage') }}">Home</a></li>
+                        <li class="{% block connexionActive %}{% endblock %}"><a href="{{ path('login') }}">Login</a></li>
+                        <li class="{% block inscriptionActive %}{% endblock %}"><a href="{{ path('inscription') }}">Sign Up</a></li>
+                    {% endif %}
                 </ul>
             </nav>
         </div>

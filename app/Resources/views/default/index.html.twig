@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 
+{% block homepageActive %}current_page_item{% endblock %}
 
 {% block header %}
     <div id="banner">
@@ -10,7 +11,7 @@
                         <h2>Le navigo à portée de tous</h2>
                         <span class="byline">Navigo 3000, première solution web de gestion de carte navigo. Découvrez nos services, et surtout payez-nous bien cher que je puisse enfin me payer des vacances !</span>
                     </header>
-                    <a href="#" class="button button-alt">Je suis intéressé</a>
+                    <a href="{{ path('inscription') }}" class="button button-alt">Je suis intéressé</a>
                 </section>
             </div>
         </div>
