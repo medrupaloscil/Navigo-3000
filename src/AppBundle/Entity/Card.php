@@ -31,7 +31,7 @@ class Card
     /**
      * @var datetime
      *
-     * @ORM\Column(name="valid", type="datetime")
+     * @ORM\Column(name="valid", type="datetime", nullable=true)
      */
     private $valid;
 

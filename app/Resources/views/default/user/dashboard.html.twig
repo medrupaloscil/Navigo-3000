@@ -4,6 +4,35 @@
 
 {% block body %}
 
-    Hey :D
+    <div class="container">
+        {% if app.user.getCard() is not null %}
+        <div class="split navigo">
+            <div class="card">
+                <div class="info">
+                    <img src="{{ asset('bundles/app/images/avatar.jpg') }}" alt="avatar">
+                    <p>{{ app.user.getFirstname() }} {{ app.user.getLastname() }}</p>
+                    <p>{{ app.user.getCard().getCardId() }}</p>
+                </div>
+                <img class="background" src="{{ asset('bundles/app/images/pass-navigo.png') }}" alt="navigo">
+            </div>
+        </div>
+        <div class="split">
+            <p>Avalaible untill: </p>
+            <p class="valability">20/12/2016</p>
+            <form class="paiement">
+                <h3>Reload yout card:</h3>
+                <select>
+                    <option value="day">1 day (10€)</option>
+                    <option value="week">1 week (24€)</option>
+                    <option value="month">1 month (70€)</option>
+                    <option value="year">1 year (341€)</option>
+                </select>
+                <button>Pay</button>
+            </form>
+        </div>
+        {% else %}
+            <p>You don't have any card linked to your account.</p>
+        {% endif %}
+    </div>
 
 {% endblock %}

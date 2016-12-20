@@ -4,6 +4,28 @@
 
 {% block body %}
 
-    User Profile
+    <div class="profile">
+        <h1>{{ app.user.getFirstname() }} {{ app.user.getLastname() }}</h1>
+        <div class="info">
+            <img src="{{ asset('bundles/app/images/avatar.jpg') }}" alt="avatar">
+            <form method="post">
+                <input type="file" name="file">
+                <input type="submit" value="Change picture">
+            </form>
+            <p>Mail: {{ app.user.getMail() }}</p>
+            <form method="post">
+                <input type="text" name="password" placeholder="Change password">
+                <input type="submit" value="Confirm">
+            </form>
+            {% if app.user.getCard() is not null %}
+                <p>Card n°{{ app.user.getCard().getCardId() }}</p>
+            {% else %}
+                <form method="post">
+                    <input type="text" name="navigo" placeholder="Card Id">
+                    <input type="submit" value="Add Card">
+                </form>
+            {% endif %}
+        </div>
+    </div>
 
 {% endblock %}

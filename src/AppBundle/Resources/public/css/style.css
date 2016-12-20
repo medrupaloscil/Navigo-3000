@@ -1006,3 +1006,86 @@ a:hover
 		font-size: 15px;
 		color: #FFF;
 	}
+
+	.split {
+		float: left;
+		margin: 20px;
+	}
+
+    .navigo .card {
+        width: 400px;
+        position: relative;
+    }
+
+    .navigo .card img.background {
+        width: 100%;
+        background-color: #66b5e0;
+        border-radius: 20px;
+        margin: 20px 0;
+    }
+
+    .navigo .info {
+        position: absolute;
+        height: 180px;
+        top: 60px;
+        right: 10px;
+        width: 150px;
+    }
+
+    .navigo .info img {
+        width: 100px;
+        margin: 0 25px;
+    }
+
+    .navigo .info p {
+        color: #000;
+        font-weight: bold;
+        text-align: center;
+    }
+
+    form.paiement select {
+        height: 30px;
+        font-size: 15px;
+    }
+
+    .valability {
+        font-weight: bold;
+        color: #FFF;
+        font-size: 18px;
+    }
+
+    .profile {
+        color: #FFF;
+    }
+
+    .profile .info {
+        width: 500px;
+        display: block;
+        margin: auto;
+        margin-bottom: 20px;
+    }
+
+    .profile h1 {
+        font-size: 20px;
+        font-weight: bold;
+        margin: 20px;
+        text-align: center;
+    }
+
+    .profile form {
+        margin: 0;
+    }
+
+    .flashbag p {
+        color: #FFF;
+        text-align: center;
+        margin: 0;
+    }
+
+    .flashbag.flashbag-info {
+        background-color: #4CAF50;
+    }
+
+    .flashbag.flashbag-error {
+        background-color: #f44336;
+    }

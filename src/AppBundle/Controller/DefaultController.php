@@ -126,8 +126,22 @@ class DefaultController extends Controller
      * @Security("has_role('ROLE_USERS')")
      */
     public function profileAction(Request $request) {
-        return $this->render('default/user/profile.html.twig', [
-            'base_dir' => realpath($this->getParameter('kernel.root_dir').'/..').DIRECTORY_SEPARATOR,
-        ]);
+
+        $controller = new ApiController();
+        $controller->container = $this->container;
+
+        if ($request->request->get('navigo') != null) {
+            $response = $controller->linkCardToUserAction($request);
+            $this->get('session')->getFlashBag()->add(
+                'info',
+                $response->getContent()["message"]
+            );
+        } else if ($request->request->get('password') != null) {
+
+        }
+
+        return $this->render('default/user/profile.html.twig', array(
+
+        ));
     }
 }

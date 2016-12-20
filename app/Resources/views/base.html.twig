@@ -33,6 +33,16 @@
         </div>
         {% block header %}{% endblock %}
     </div>
+    {% for message in app.session.flashbag.get('info') %}
+        <div class="flashbag flashbag-info">
+            <p>{{ message }}</p>
+        </div>
+    {% endfor %}
+    {% for message in app.session.flashbag.get('error') %}
+        <div class="flashbag flashbag-error">
+            <p>{{ message }}</p>
+        </div>
+    {% endfor %}
     {% block body %}{% endblock %}
     {% block javascripts %}{% endblock %}
     <div id="copyright" class="container">

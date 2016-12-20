@@ -8,7 +8,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Card;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\Request;
@@ -47,6 +49,45 @@ class ApiController extends Controller
 
 
         return new Response(array('last_username' => $lastUsername,'error' => $error));
+    }
+
+    /**
+     * @Route("/api/v1/linkCardToUser", name="apiLinkCardToUser")
+     * @Security("has_role('ROLE_USERS')")
+     */
+    public function linkCardToUserAction(Request $request) {
+
+        $navigo = $request->request->get("navigo");
+
+        if ($navigo != null) {
+
+            $em = $this->getDoctrine()->getManager();
+            $cards = $em->getRepository('AppBundle:Card');
+
+            $card = $cards->findOneBy(array('cardId' => $navigo));
+
+            if ($card == null) {
+
+                $card = new Card();
+                $card->setCardId($navigo);
+                $em->persist($card);
+                $em->flush();
+
+                $user = $this->getUser();
+                $user->setCard($card);
+
+                $em->persist($user);
+                $em->flush();
+
+                $response = new Response(array("message" => "User updated"));
+            } else {
+                $response = new Response(array("message" => "Card already in our Database, please contact an administrator to link your card."), 200);
+            }
+        } else {
+            $response = new Response(array("message" => "Data Error"));
+        }
+
+        return $response;
     }
 
 }

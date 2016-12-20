@@ -53,6 +53,12 @@ class User implements UserInterface
      */
     private $roles = array();
 
+    /**
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Card")
+     * @ORM\JoinColumn(nullable=true)
+     */
+    private $card;
+
     public function getUsername()
     {
         return $this->mail;
@@ -185,5 +191,29 @@ class User implements UserInterface
         $this->roles = $roles;
 
         return $this;
+    }
+
+    /**
+     * Set card
+     *
+     * @param \AppBundle\Entity\Card $card
+     *
+     * @return User
+     */
+    public function setCard(\AppBundle\Entity\Card $card = null)
+    {
+        $this->card = $card;
+
+        return $this;
+    }
+
+    /**
+     * Get card
+     *
+     * @return \AppBundle\Entity\Card
+     */
+    public function getCard()
+    {
+        return $this->card;
     }
 }
