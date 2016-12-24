@@ -5,6 +5,9 @@
 {% block body %}
 
     <div class="container">
+        {% if is_granted("ROLE_ADMIN") %}
+            admin
+        {% else %}
         {% if app.user.getCard() is not null %}
         <div class="split navigo">
             <div class="card">
@@ -32,6 +35,7 @@
         </div>
         {% else %}
             <p>You don't have any card linked to your account.</p>
+        {% endif %}
         {% endif %}
     </div>
 

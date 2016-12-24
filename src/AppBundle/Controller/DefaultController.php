@@ -137,11 +137,42 @@ class DefaultController extends Controller
                 $response->getContent()["message"]
             );
         } else if ($request->request->get('password') != null) {
-
+            $response = $controller->changePasswordAction($request, $this->getUser());
+            $this->get('session')->getFlashBag()->add(
+                'info',
+                $response->getContent()["message"]
+            );
         }
 
         return $this->render('default/user/profile.html.twig', array(
 
+        ));
+    }
+
+    /**
+     * @Route("/admin/users/{page}", name="users")
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function usersAction(Request $request, $page = 0) {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $offset = $page * 50;
+
+        $sql = "SELECT * FROM navigo.user LIMIT 50 OFFSET $offset;";
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $users = $stmt->fetchAll();
+
+        $sql = "SELECT COUNT(*) as count FROM navigo.user";
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $count = floor($stmt->fetchAll()[0]["count"]/50);
+
+        return $this->render('default/admin/users.html.twig', array(
+            "users" => $users,
+            "count" => $count,
+            "page" => $page
         ));
     }
 }

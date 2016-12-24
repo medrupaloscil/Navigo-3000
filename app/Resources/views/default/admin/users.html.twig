@@ -1,0 +1,59 @@
+{% extends 'base.html.twig' %}
+
+{% block usersActive %}current_page_item{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="paginate">
+            <a href="{{ path("users", {"page": 0}) }}">First</a>
+            {% for i in 2..-2 %}
+            {% if page - i >= 0 and page - i <= count %}
+            <a href="{{ path("users", {"page": page - i}) }}">{{ page - i }}</a>
+            {% endif %}
+            {% endfor %}
+            <a href="{{ path("users", {"page": count}) }}">Last</a>
+        </div>
+        <table id="users" class="display" cellspacing="0" width="100%">
+            <thead>
+                <tr>
+                    <th>#ID</th>
+                    <th>Name</th>
+                    <th>Mail</th>
+                    <th>#Card</th>
+                </tr>
+            </thead>
+            <tfoot>
+                <tr>
+                    <th>#ID</th>
+                    <th>Name</th>
+                    <th>Mail</th>
+                    <th>#Card ID</th>
+                </tr>
+            </tfoot>
+            <tbody>
+                {% for user in users %}
+                <tr>
+                    <td>{{ user["id"] }}</td>
+                    <td>{{ user["firstname"] }} {{ user["lastname"] }}</td>
+                    <td>{{ user["mail"] }}</td>
+                    <td>{{ user["card_id"] }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#users').DataTable( {
+                "paging":   false,
+                "ordering": false,
+                "info":     false
+            } );
+        } );
+    </script>
+{% endblock %}

@@ -7,10 +7,12 @@
     <meta name="keywords" content="" />
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700,800" rel="stylesheet" type="text/css" />
     <!--[if lte IE 8]><script src="js/html5shiv.js"></script><![endif]-->
-    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <link rel="stylesheet" href="{{ asset('bundles/app/css/skel-noscript.css') }}" />
     <link rel="stylesheet" href="{{ asset('bundles/app/css/style.css') }}" />
     <link rel="stylesheet" href="{{ asset('bundles/app/css/style-desktop.css') }}" />
+    <link rel="stylesheet" href="{{ asset('bundles/app/css/datatable.css') }}" />
+    <script src="{{ asset('bundles/app/js/jquery.js') }}"></script>
+    <script src="{{ asset('bundles/app/js/datatable.js') }}"></script>
     {% block stylesheets %}{% endblock %}
 </head>
 <body class="homepage">
@@ -21,7 +23,12 @@
                 <ul>
                     {% if is_granted("ROLE_USER") %}
                         <li class="{% block dashboardActive %}{% endblock %}"><a href="{{ path('dashboard') }}">Dashboard</a></li>
-                        <li class="{% block profileActive %}{% endblock %}"><a href="{{ path('profile') }}">Profile</a></li>
+                        {% if is_granted("ROLE_ADMIN") %}
+                        <li class="{% block usersActive %}{% endblock %}"><a href="{{ path('users', {"page": 0}) }}">Users</a></li>
+                        <li class="{% block cardsActive %}{% endblock %}"><a href="{{ path('dashboard') }}">Cards</a></li>
+                        {% else %}
+                            <li class="{% block profileActive %}{% endblock %}"><a href="{{ path('profile') }}">Profile</a></li>
+                        {% endif %}
                         <li><a href="{{ path('logout') }}">Logout</a></li>
                     {% else %}
                         <li class="{% block homepageActive %}{% endblock %}"><a href="{{ path('homepage') }}">Home</a></li>

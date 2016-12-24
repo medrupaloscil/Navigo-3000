@@ -3,7 +3,9 @@
 {% block profileActive %}current_page_item{% endblock %}
 
 {% block body %}
-
+{% if is_granted("ROLE_ADMIN") %}
+    Nope
+{% else %}
     <div class="profile">
         <h1>{{ app.user.getFirstname() }} {{ app.user.getLastname() }}</h1>
         <div class="info">
@@ -14,7 +16,7 @@
             </form>
             <p>Mail: {{ app.user.getMail() }}</p>
             <form method="post">
-                <input type="text" name="password" placeholder="Change password">
+                <input type="password" name="password" placeholder="Change password">
                 <input type="submit" value="Confirm">
             </form>
             {% if app.user.getCard() is not null %}
@@ -27,5 +29,5 @@
             {% endif %}
         </div>
     </div>
-
+{% endif %}
 {% endblock %}
