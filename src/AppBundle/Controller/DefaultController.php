@@ -175,4 +175,31 @@ class DefaultController extends Controller
             "page" => $page
         ));
     }
+
+    /**
+     * @Route("/admin/cards/{page}", name="cards")
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    public function cardsAction(Request $request, $page = 0) {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $offset = $page * 50;
+
+        $sql = "SELECT * FROM navigo.card LIMIT 50 OFFSET $offset;";
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $cards = $stmt->fetchAll();
+
+        $sql = "SELECT COUNT(*) as count FROM navigo.card";
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute();
+        $count = floor($stmt->fetchAll()[0]["count"]/50);
+
+        return $this->render('default/admin/cards.html.twig', array(
+            "cards" => $cards,
+            "count" => $count,
+            "page" => $page
+        ));
+    }
 }

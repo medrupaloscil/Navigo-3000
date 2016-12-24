@@ -25,7 +25,7 @@
                         <li class="{% block dashboardActive %}{% endblock %}"><a href="{{ path('dashboard') }}">Dashboard</a></li>
                         {% if is_granted("ROLE_ADMIN") %}
                         <li class="{% block usersActive %}{% endblock %}"><a href="{{ path('users', {"page": 0}) }}">Users</a></li>
-                        <li class="{% block cardsActive %}{% endblock %}"><a href="{{ path('dashboard') }}">Cards</a></li>
+                        <li class="{% block cardsActive %}{% endblock %}"><a href="{{ path('cards', {"page": 0}) }}">Cards</a></li>
                         {% else %}
                             <li class="{% block profileActive %}{% endblock %}"><a href="{{ path('profile') }}">Profile</a></li>
                         {% endif %}

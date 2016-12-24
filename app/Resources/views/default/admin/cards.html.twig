@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block cardsActive %}current_page_item{% endblock %}
+
+{% block body %}
+
+    <div class="container">
+        <div class="paginate">
+            <a href="{{ path("cards", {"page": 0}) }}">First</a>
+            {% for i in 2..-2 %}
+                {% if page - i >= 0 and page - i <= count %}
+                    <a href="{{ path("cards", {"page": page - i}) }}">{{ page - i }}</a>
+                {% endif %}
+            {% endfor %}
+            <a href="{{ path("cards", {"page": count}) }}">Last</a>
+        </div>
+        <table id="cards" class="display" cellspacing="0" width="100%">
+            <thead>
+            <tr>
+                <th>#ID</th>
+                <th>Code</th>
+                <th>Valid</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <th>#ID</th>
+                <th>Code</th>
+                <th>Valid</th>
+            </tr>
+            </tfoot>
+            <tbody>
+            {% for user in cards %}
+                <tr>
+                    <td>#{{ user["id"] }}</td>
+                    <td>{{ user["card_id"] }}</td>
+                    <td>{{ user["valid"] }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#cards').DataTable( {
+                "paging":   false,
+                "ordering": false,
+                "info":     false
+            } );
+        } );
+    </script>
+{% endblock %}
