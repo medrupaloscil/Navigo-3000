@@ -96,14 +96,18 @@ class DefaultController extends Controller
         $id = $request->request->get('card-id');
 
         if ($id != null) {
-            $em = $this->getDoctrine()->getManager();
-            $cards = $em->getRepository('AppBundle:Card');
-            $card = $cards->findOneBy(array('cardId' => $id));
-            if ($card == null) {
-                $result = "error";
-                $card = "There is no card with id: $id.";
+            $controller = new ApiController();
+            $controller->container = $this->container;
+            $response = $controller->validityAction($request);
+
+            if ($response->getContent()["success"] == false) {
+                $this->get('session')->getFlashBag()->add(
+                    'info',
+                    $response->getContent()["message"]
+                );
             } else {
                 $result = "success";
+                $card = $response->getContent()["card"];
             }
         }
 
@@ -118,7 +122,28 @@ class DefaultController extends Controller
      * @Security("has_role('ROLE_USERS')")
      */
     public function dashboardAction(Request $request) {
-        return $this->render('default/user/dashboard.html.twig');
+
+        $card = null;
+        $id = $request->request->get('card-id');
+
+        if ($id != null) {
+            $controller = new ApiController();
+            $controller->container = $this->container;
+            $response = $controller->validityAction($request);
+
+            if ($response->getContent()["success"] == false) {
+                $this->get('session')->getFlashBag()->add(
+                    'info',
+                    $response->getContent()["message"]
+                );
+            } else {
+                $card = $response->getContent()["card"];
+            }
+        }
+
+        return $this->render('default/user/dashboard.html.twig', array(
+            "card" => $card
+        ));
     }
 
     /**

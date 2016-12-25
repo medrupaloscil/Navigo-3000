@@ -59,6 +59,13 @@ class User implements UserInterface
      */
     private $card;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="picture", type="string", length=255, nullable=true)
+     */
+    private $picture;
+
     public function getUsername()
     {
         return $this->mail;
@@ -215,5 +222,29 @@ class User implements UserInterface
     public function getCard()
     {
         return $this->card;
+    }
+
+    /**
+     * Set picture
+     *
+     * @param string $picture
+     *
+     * @return User
+     */
+    public function setPicture($picture)
+    {
+        $this->picture = $picture;
+
+        return $this;
+    }
+
+    /**
+     * Get picture
+     *
+     * @return string
+     */
+    public function getPicture()
+    {
+        return $this->picture;
     }
 }

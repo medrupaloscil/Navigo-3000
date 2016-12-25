@@ -53,6 +53,27 @@ class ApiController extends Controller
     }
 
     /**
+     * @Route("/api/v1/validity", name="validity")
+     */
+    public function validityAction(Request $request) {
+
+        $id = $request->request->get('card-id');
+
+        $em = $this->getDoctrine()->getManager();
+        $cards = $em->getRepository('AppBundle:Card');
+
+        $card = $cards->findOneBy(array('cardId' => $id));
+
+        if ($card == null) {
+            $response = new Response(array("success" => false, "message" => "There is no card with id: $id."));
+        } else {
+            $response = new Response(array("success" => true, "card" => $card));
+        }
+
+        return $response;
+    }
+
+    /**
      * @Route("/api/v1/linkCardToUser", name="apiLinkCardToUser")
      * @Security("has_role('ROLE_USERS')")
      */

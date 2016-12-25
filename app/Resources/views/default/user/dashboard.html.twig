@@ -6,7 +6,25 @@
 
     <div class="container">
         {% if is_granted("ROLE_ADMIN") %}
-            admin
+            <div id="featured-wrapper" class="test-card">
+                <div class="container">
+                    <form method="post" action="{{ path("dashboard") }}">
+                        <input type="text" placeholder="Card Id" name="card-id">
+                        <input type="submit">
+                    </form>
+                </div>
+                {% if card is not null %}
+                    {% if card.getValid()|date("d-m-Y") < "now"|date("d-m-Y") %}
+                        <div class="info alert">
+                            The card n° {{ card.getCardId() }} is not valid since {{ card.getValid()|date("d-m-Y") }}.
+                        </div>
+                    {% else %}
+                        <div class="info success">
+                            The card n° {{ card.getCardId() }} is valid untill {{ card.getValid()|date("d-m-Y") }}.
+                        </div>
+                    {% endif %}
+                {% endif %}
+            </div>
         {% else %}
         {% if app.user.getCard() is not null %}
         <div class="split navigo">
