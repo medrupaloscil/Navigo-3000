@@ -30,7 +30,7 @@
         <div class="split navigo">
             <div class="card">
                 <div class="info">
-                    <img src="{{ asset('bundles/app/images/avatar.jpg') }}" alt="avatar">
+                    <img src="{% if app.user.getPicture() == "" %}{{ asset('bundles/app/images/avatar.jpg') }}{% else %}{{ asset(app.user.getPicture()) }}{% endif %}" alt="avatar">
                     <p>{{ app.user.getFirstname() }} {{ app.user.getLastname() }}</p>
                     <p>{{ app.user.getCard().getCardId() }}</p>
                 </div>

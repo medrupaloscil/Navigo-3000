@@ -1034,6 +1034,7 @@ a:hover
 
     .navigo .info img {
         width: 100px;
+		max-height: 120px;
         margin: 0 25px;
     }
 
@@ -1063,6 +1064,10 @@ a:hover
         display: block;
         margin: auto;
         margin-bottom: 20px;
+    }
+
+    .profile .info img {
+        width: 200px;
     }
 
     .profile h1 {

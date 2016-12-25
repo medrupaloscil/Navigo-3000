@@ -167,6 +167,13 @@ class DefaultController extends Controller
                 'info',
                 $response->getContent()["message"]
             );
+        } else if (count($_FILES) > 0) {
+
+            $response = $controller->uploadImageAction($request);
+            $this->get('session')->getFlashBag()->add(
+                'info',
+                $response->getContent()["message"]
+            );
         }
 
         return $this->render('default/user/profile.html.twig', array(

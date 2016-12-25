@@ -53,7 +53,7 @@ class ApiController extends Controller
     }
 
     /**
-     * @Route("/api/v1/validity", name="validity")
+     * @Route("/api/v1/validity", name="apiValidity")
      */
     public function validityAction(Request $request) {
 
@@ -141,4 +141,47 @@ class ApiController extends Controller
         return $response;
     }
 
+    /**
+     * @Route("/api/v1/uploadImage", name="apiUploadImage")
+     * @Security("has_role('ROLE_USERS')")
+     */
+    function uploadImageAction(Request $request) {
+
+        if (count($_FILES) > 0) {
+            $target_dir = $this->get('kernel')->getRootDir() . "/../web/cdn/";
+            $target_file = $target_dir . basename($_FILES["file"]["name"]);
+            $imageFileType = pathinfo($target_file,PATHINFO_EXTENSION);
+            $uploadOk = 1;
+            if(!empty($_FILES["file"]["tmp_name"])) {
+                $check = getimagesize($_FILES["file"]["tmp_name"]);
+                if($check === false) $uploadOk = 0;
+            } else {
+                $uploadOk = 0;
+            }
+            if (file_exists($target_file)) $uploadOk = 0;
+            if ($_FILES["file"]["size"] > 1000000) $uploadOk = 0;
+            if($imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg" && $imageFileType != "gif" ) $uploadOk = 0;
+            if ($uploadOk == 0) {
+                $response = new Response(array("message" => "An error happend"));
+            } else {
+                if (move_uploaded_file($_FILES["file"]["tmp_name"], $target_file)) {
+
+                    $em = $this->getDoctrine()->getManager();
+                    $user = $this->getUser();
+                    $final_file = 'cdn/'. basename($_FILES["file"]["name"]);
+                    $user->setPicture($final_file);
+                    $em->persist($user);
+                    $em->flush();
+
+                    $response = new Response(array("message" => "File uploaded"));
+                } else {
+                    $response = new Response(array("message" => "Error when moving file"));
+                }
+            }
+        } else {
+            $response = new Response(array("message" => "No file"));
+        }
+
+        return $response;
+    }
 }

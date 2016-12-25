@@ -9,8 +9,8 @@
     <div class="profile">
         <h1>{{ app.user.getFirstname() }} {{ app.user.getLastname() }}</h1>
         <div class="info">
-            <img src="{{ asset('bundles/app/images/avatar.jpg') }}" alt="avatar">
-            <form method="post">
+            <img src="{% if app.user.getPicture() == "" %}{{ asset('bundles/app/images/avatar.jpg') }}{% else %}{{ asset(app.user.getPicture()) }}{% endif %}" alt="avatar">
+            <form method="post" enctype="multipart/form-data">
                 <input type="file" name="file">
                 <input type="submit" value="Change picture">
             </form>
