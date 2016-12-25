@@ -5,6 +5,16 @@
 {% block body %}
 
     <div class="container">
+
+        {% if path is not null %}
+            <a href="{{ path }}" download>users.csv</a>
+        {% else %}
+            <form method="post">
+                <input type="hidden" name="repo" value="user">
+                <input type="submit" value="Export">
+            </form>
+        {% endif %}
+
         <div class="paginate">
             <a href="{{ path("users", {"page": 0}) }}">First</a>
             {% for i in 2..-2 %}

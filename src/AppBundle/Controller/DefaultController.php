@@ -200,6 +200,21 @@ class DefaultController extends Controller
     public function usersAction(Request $request, $page = 0) {
 
         $em = $this->getDoctrine()->getManager();
+        $path = null;
+
+        if ($request->request->get("repo") != null) {
+            $controller = new ApiController();
+            $controller->container = $this->container;
+
+            $response = $controller->csvExportAction($request);
+
+            $path = $response->getContent()["path"];
+
+            $this->get('session')->getFlashBag()->add(
+                'info',
+                $response->getContent()["message"]
+            );
+        }
 
         $offset = $page * 50;
 
@@ -216,7 +231,8 @@ class DefaultController extends Controller
         return $this->render('default/admin/users.html.twig', array(
             "users" => $users,
             "count" => $count,
-            "page" => $page
+            "page" => $page,
+            "path" => $path
         ));
     }
 
@@ -227,6 +243,21 @@ class DefaultController extends Controller
     public function cardsAction(Request $request, $page = 0) {
 
         $em = $this->getDoctrine()->getManager();
+        $path = null;
+
+        if ($request->request->get("repo") != null) {
+            $controller = new ApiController();
+            $controller->container = $this->container;
+
+            $response = $controller->csvExportAction($request);
+
+            $path = $response->getContent()["path"];
+
+            $this->get('session')->getFlashBag()->add(
+                'info',
+                $response->getContent()["message"]
+            );
+        }
 
         $offset = $page * 50;
 
@@ -243,7 +274,8 @@ class DefaultController extends Controller
         return $this->render('default/admin/cards.html.twig', array(
             "cards" => $cards,
             "count" => $count,
-            "page" => $page
+            "page" => $page,
+            "path" => $path
         ));
     }
 }

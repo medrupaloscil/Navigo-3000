@@ -211,6 +211,26 @@ class ApiController extends Controller
     }
 
     /**
+     * @Route("/api/v1/exportAsCsv", name="apiCsvExport")
+     * @Security("has_role('ROLE_ADMIN')")
+     */
+    function csvExportAction(Request $request) {
+
+        $em = $this->getDoctrine()->getManager();
+
+        $repo = strtolower($request->request->get("repo"));
+        $path = $this->get('kernel')->getRootDir() . "/../web/csv/$repo.csv";
+        if (file_exists($path)) {
+            unlink($path);
+        }
+        $sql = "SELECT * FROM navigo.$repo INTO OUTFILE \"$path\" FIELDS TERMINATED BY ',' ENCLOSED BY '\"' LINES TERMINATED BY '\n';";
+        $stmt = $em->getConnection()->prepare($sql);
+        $stmt->execute();
+
+        return new Response(array("message" => "CSV created", "path" => $request->getUri()."/../../../csv/$repo.csv"));
+    }
+
+    /**
      * @Route("/api/v1/uploadImage", name="apiUploadImage")
      * @Security("has_role('ROLE_USERS')")
      */
