@@ -39,10 +39,10 @@
         </div>
         <div class="split">
             <p>Avalaible untill: </p>
-            <p class="valability">20/12/2016</p>
-            <form class="paiement">
+            <p class="valability">{{ app.user.getCard().getValid()|date("d/m/Y") }}</p>
+            <form class="paiement" method="post">
                 <h3>Reload yout card:</h3>
-                <select>
+                <select name="type">
                     <option value="day">1 day (10€)</option>
                     <option value="week">1 week (24€)</option>
                     <option value="month">1 month (70€)</option>

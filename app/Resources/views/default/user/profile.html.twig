@@ -28,6 +28,43 @@
                 </form>
             {% endif %}
         </div>
+        <table id="factures" class="display" cellspacing="0" width="80%">
+            <thead>
+            <tr>
+                <th>#ID</th>
+                <th>Amount</th>
+                <th>Date</th>
+            </tr>
+            </thead>
+            <tfoot>
+            <tr>
+                <th>#ID</th>
+                <th>Amount</th>
+                <th>Date</th>
+            </tr>
+            </tfoot>
+            <tbody>
+            {% for facture in factures %}
+                <tr style="color: #000;">
+                    <th>#{{ facture.getId() }}</th>
+                    <th>{{ facture.getAmount() }}€</th>
+                    <th>{{ facture.getDate()|date("d/m/Y") }}</th>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
     </div>
 {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <script>
+        $(document).ready(function() {
+            $('#factures').DataTable( {
+                "paging":   true,
+                "ordering": false,
+                "info":     false
+            } );
+        } );
+    </script>
 {% endblock %}

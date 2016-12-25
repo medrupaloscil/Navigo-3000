@@ -139,6 +139,15 @@ class DefaultController extends Controller
             } else {
                 $card = $response->getContent()["card"];
             }
+        } else if ($request->request->get('type') != null) {
+            $controller = new ApiController();
+            $controller->container = $this->container;
+            $response = $controller->paymentAction($request);
+
+            $this->get('session')->getFlashBag()->add(
+                'info',
+                $response->getContent()["message"]
+            );
         }
 
         return $this->render('default/user/dashboard.html.twig', array(
@@ -154,6 +163,9 @@ class DefaultController extends Controller
 
         $controller = new ApiController();
         $controller->container = $this->container;
+        $em = $this->getDoctrine()->getManager();
+        $factures = $em->getRepository("AppBundle:Facture");
+        $userFactures = $factures->findBy(array("userId" => $this->getUser()));
 
         if ($request->request->get('navigo') != null) {
             $response = $controller->linkCardToUserAction($request);
@@ -177,7 +189,7 @@ class DefaultController extends Controller
         }
 
         return $this->render('default/user/profile.html.twig', array(
-
+            "factures" => $userFactures
         ));
     }
 

@@ -9,6 +9,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Card;
+use AppBundle\Entity\Facture;
 use AppBundle\Entity\User;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
@@ -19,6 +20,8 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Validator\Constraints\Date;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class ApiController extends Controller
 {
@@ -139,6 +142,72 @@ class ApiController extends Controller
         }
 
         return $response;
+    }
+
+    /**
+     * @Route("/api/v1/payment", name="apiPayment")
+     * @Security("has_role('ROLE_USERS')")
+     */
+    function paymentAction(Request $request) {
+
+        /*$host = $this->container->getParameter('paypal_host');
+        $username = $this->container->getParameter('paypal_user');
+        $password = $this->container->getParameter('paypal_secret');
+
+        $ch = curl_init();
+        curl_setopt($ch, CURLOPT_URL, $host);
+        curl_setopt($ch, CURLOPT_HEADER, 0);
+        curl_setopt($ch, CURLOPT_USERPWD, $username . ":" . $password);
+        $response = curl_exec($ch);
+        curl_close($ch);
+
+        var_dump($response);*/
+
+        $em = $this->getDoctrine()->getManager();
+        $user = $this->getUser();
+        $now = date_create("now");
+
+        $card = $user->getCard();
+        $date = $card->getValid();
+
+        if ($date < $now) {
+            $date = $now;
+        }
+
+        switch ($request->request->get("type")) {
+            case "day":
+                date_add($date, date_interval_create_from_date_string('1 days'));
+                $amount = 10;
+                break;
+            case "week":
+                date_add($date, date_interval_create_from_date_string('7 days'));
+                $amount = 24;
+                break;
+            case "Month":
+                date_add($date, date_interval_create_from_date_string('30 days'));
+                $amount = 70;
+                break;
+            case "Year":
+                date_add($date, date_interval_create_from_date_string('365 days'));
+                $amount = 341;
+                break;
+            default:
+                return new Response(array("message" => "Type Error"));
+                break;
+        }
+
+        $card->setValid($date);
+
+        $facture = new Facture();
+        $facture->setAmount($amount);
+        $facture->setUserId($user);
+        $facture->setDate($now);
+
+        $em->persist($facture);
+        $em->persist($card);
+        $em->flush();
+
+        return new Response(array("message" => "Card reloaded"));
     }
 
     /**
