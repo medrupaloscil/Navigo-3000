@@ -20,6 +20,7 @@ use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInt
 use Symfony\Component\Security\Core\Authentication\AuthenticationManagerInterface;
 use Symfony\Component\HttpKernel\Event\GetResponseEvent;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
+use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Validator\Constraints\Date;
 use Symfony\Component\Validator\Constraints\DateTime;
 
@@ -45,14 +46,27 @@ class ApiController extends Controller
      */
     public function apiConnectionAction(Request $request) {
 
-        $authenticationUtils = $this->get('security.authentication_utils');
+        $username = $request->request->get('_username');
 
-        $error = $authenticationUtils->getLastAuthenticationError();
+        if ($username != null) {
+            $em = $this->getDoctrine()->getManager();
+            $users = $em->getRepository("AppBundle:User");
+            $user = $users->findOneBy(array("mail" => $username, "password" => sha1($request->request->get("_password"))));
 
-        $lastUsername = $authenticationUtils->getLastUsername();
+            if ($user != null) {
+                $token = new UsernamePasswordToken($user, $user->getPassword(), "public", $user->getRoles());
+                $this->get("security.token_storage")->setToken($token);
+                $event = new InteractiveLoginEvent($request, $token);
+                $this->get("event_dispatcher")->dispatch("security.interactive_login", $event);
+                $response = new Response(array("message" => "Connection successful"));
+            } else {
+                $response = new Response(array("message" => "Bad Credentials"));
+            }
+        } else {
+            $response = new Response(array("message" => "Data Error"));
+        }
 
-
-        return new Response(array('last_username' => $lastUsername,'error' => $error));
+        return $response;
     }
 
     /**
@@ -183,11 +197,11 @@ class ApiController extends Controller
                 date_add($date, date_interval_create_from_date_string('7 days'));
                 $amount = 24;
                 break;
-            case "Month":
+            case "month":
                 date_add($date, date_interval_create_from_date_string('30 days'));
                 $amount = 70;
                 break;
-            case "Year":
+            case "year":
                 date_add($date, date_interval_create_from_date_string('365 days'));
                 $amount = 341;
                 break;
